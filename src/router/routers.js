@@ -441,5 +441,196 @@ export default [
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
+  },
+  /* flower in router */
+  {
+    path: '/goods',
+    name: '商品管理',
+    meta: {
+      icon: '',
+      title: '商品管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'list',
+        name: '商品列表',
+        meta: {
+          icon: '',
+          title: '商品列表'
+        },
+        component: () => import('@/view/goods/list.vue')
+      },
+      {
+        path: 'brand',
+        name: '品牌维护',
+        meta: {
+          icon: '',
+          title: '品牌维护'
+        },
+        component: () => import('@/view/goods/brand.vue')
+      },
+      {
+        path: 'label',
+        name: '标签维护',
+        meta: {
+          icon: '',
+          title: '标签维护'
+        },
+        component: () => import('@/view/goods/label.vue')
+      },
+      {
+        path: 'classify',
+        name: '商品分类',
+        meta: {
+          icon: '',
+          title: '商品分类'
+        },
+        component: () => import('@/view/goods/classify.vue')
+      }
+    ]
+  },
+  {
+    path: '/order',
+    name: '订单管理',
+    meta: {
+      icon: '',
+      title: '订单管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'list',
+        name: '订单列表',
+        meta: {
+          icon: '',
+          title: '订单列表'
+        },
+        component: () => import('@/view/order/list.vue')
+      },
+      {
+        path: 'notice',
+        name: '订单提醒',
+        meta: {
+          icon: '',
+          title: '订单提醒'
+        },
+        component: () => import('@/view/order/notice.vue')
+      },
+      {
+        path: 'logistics',
+        name: '物流管理',
+        meta: {
+          icon: '',
+          title: '物流管理'
+        },
+        component: () => import('@/view/order/logistics.vue')
+      }
+    ]
+  },
+  {
+    path: '/member',
+    name: '会员管理',
+    meta: {
+      icon: '',
+      title: '会员管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'list',
+        name: '会员列表',
+        meta: {
+          icon: '',
+          title: '会员列表'
+        },
+        component: () => import('@/view/member/list.vue')
+      },
+      {
+        path: 'level',
+        name: '会员等级',
+        meta: {
+          icon: '',
+          title: '会员等级'
+        },
+        component: () => import('@/view/member/level.vue')
+      },
+      {
+        path: 'wallet',
+        name: '会员钱包',
+        meta: {
+          icon: '',
+          title: '会员钱包'
+        },
+        component: () => import('@/view/member/wallet.vue')
+      }
+    ]
+  },
+  {
+    path: '/marketing',
+    name: '营销管理',
+    meta: {
+      icon: '',
+      title: '营销管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'coupon',
+        name: '优惠券',
+        meta: {
+          icon: '',
+          title: '优惠券'
+        },
+        component: () => import('@/view/marketing/coupon.vue')
+      },
+      {
+        path: 'advanceSale',
+        name: '预售',
+        meta: {
+          icon: '',
+          title: '预售'
+        },
+        component: () => import('@/view/marketing/advanceSale.vue')
+      }
+    ]
+  },
+  {
+    path: '/statistical',
+    name: '统计管理',
+    meta: {
+      icon: '',
+      title: '统计管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'orderAnalysis',
+        name: '订单分析',
+        meta: {
+          icon: '',
+          title: '订单分析'
+        },
+        component: () => import('@/view/statistical/orderAnalysis.vue')
+      },
+      {
+        path: 'memberAnalysis',
+        name: '会员分析',
+        meta: {
+          icon: '',
+          title: '会员分析'
+        },
+        component: () => import('@/view/statistical/memberAnalysis.vue')
+      },
+      {
+        path: 'goodsAnalysis',
+        name: '商品分析',
+        meta: {
+          icon: '',
+          title: '商品分析'
+        },
+        component: () => import('@/view/statistical/goodsAnalysis.vue')
+      }
+    ]
   }
 ]

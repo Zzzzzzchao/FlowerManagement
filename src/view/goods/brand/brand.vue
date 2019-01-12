@@ -1,9 +1,9 @@
 <template>
-  <div class="logisticsList">
+  <div class="brandList">
     <!-- top -->
     <div class="top">
       <Form :model="formLeft" label-position="right" :label-width="80" inline>
-        <FormItem label="物流名称">
+        <FormItem label="品牌名称">
           <Input v-model="formLeft.input2" />
         </FormItem>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">查询</Button>
@@ -21,7 +21,7 @@
 </template>
 <script>
 export default {
-  name: 'logisticsList',
+  name: 'goodsList',
   data () {
     return {
       formLeft: {
@@ -29,19 +29,28 @@ export default {
       },
       tableColumns: [
         {
-          title: '物流方式编号',
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '品牌编号',
           key: 'name'
         },
         {
-          title: '物流方式名称',
+          title: '品牌logo',
           key: 'name'
         },
         {
-          title: '地区',
+          title: '品牌名称',
           key: 'name'
         },
         {
-          title: '运费',
+          title: '品牌介绍',
+          key: 'name'
+        },
+        {
+          title: '状态',
           key: 'name'
         },
         {
@@ -50,6 +59,20 @@ export default {
           key: 'address',
           render: (h, params) => {
             return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.show(params.index)
+                  }
+                }
+              }, '查看'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -96,7 +119,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.logisticsList{
+.brandList{
   height: 100%;
   .top{
     margin-bottom: 10px;

@@ -459,7 +459,7 @@ export default [
           icon: '',
           title: '商品列表'
         },
-        component: () => import('@/view/goods/list.vue')
+        component: () => import('@/view/goods/list/list.vue')
       },
       {
         path: 'brand',
@@ -468,7 +468,7 @@ export default [
           icon: '',
           title: '品牌维护'
         },
-        component: () => import('@/view/goods/brand.vue')
+        component: () => import('@/view/goods/brand/brand.vue')
       },
       {
         path: 'label',
@@ -477,7 +477,7 @@ export default [
           icon: '',
           title: '标签维护'
         },
-        component: () => import('@/view/goods/label.vue')
+        component: () => import('@/view/goods/label/label.vue')
       },
       {
         path: 'classify',

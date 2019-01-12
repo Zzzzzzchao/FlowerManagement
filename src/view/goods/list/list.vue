@@ -1,33 +1,32 @@
 <template>
-  <div class="orderList">
+  <div class="goodsList">
     <!-- top -->
     <div class="top">
       <Form :model="formLeft" label-position="right" :label-width="80" inline>
-        <FormItem label="订单号">
+        <FormItem label="商品分类">
           <Input v-model="formLeft.input1" />
         </FormItem>
-        <FormItem label="订单状态">
+        <FormItem label="商品名称">
           <Input v-model="formLeft.input2" />
         </FormItem>
-        <FormItem label="会员名称">
+        <FormItem label="商品状态">
           <Input v-model="formLeft.input3" />
         </FormItem>
-        <FormItem label="时间区间">
+        <FormItem label="商品品牌">
           <Input v-model="formLeft.input3" />
         </FormItem>
-        <FormItem label="商品名称">
+        <FormItem label="商家编码">
           <Input v-model="formLeft.input3" />
         </FormItem>
-        <FormItem label="收货人">
-          <Input v-model="formLeft.input3" />
-        </FormItem>
-        <FormItem label="联系电话">
+        <FormItem label="商品编码">
           <Input v-model="formLeft.input3" />
         </FormItem>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">查询</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">新增</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">导入</Button>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">导出</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量打印订单详情</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量打印订单快递单</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量删除</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量上下架</Button>
       </Form>
     </div>
     <!-- table -->
@@ -41,7 +40,7 @@
 </template>
 <script>
 export default {
-  name: 'orderList',
+  name: 'goodsList',
   data () {
     return {
       formLeft: {
@@ -56,27 +55,51 @@ export default {
           align: 'center'
         },
         {
-          title: '订单编号',
+          title: '商品货号',
           key: 'name'
         },
         {
-          title: '会员名称',
+          title: '商品名称',
           key: 'age'
         },
         {
-          title: '联系电话',
-          key: 'age'
-        },
-        {
-          title: '时间',
+          title: '商品分类',
           key: 'address'
         },
         {
-          title: '订单金额',
+          title: '商品品牌',
           key: 'address'
         },
         {
-          title: '订单状态',
+          title: '商品简介',
+          key: 'address'
+        },
+        {
+          title: '商品标签',
+          key: 'address'
+        },
+        {
+          title: '商品单位',
+          key: 'address'
+        },
+        {
+          title: '商品状态',
+          key: 'address'
+        },
+        {
+          title: '市场价',
+          key: 'address'
+        },
+        {
+          title: '一口价',
+          key: 'address'
+        },
+        {
+          title: '成本价',
+          key: 'address'
+        },
+        {
+          title: '库存信息',
           key: 'address'
         },
         {
@@ -85,6 +108,34 @@ export default {
           key: 'address',
           render: (h, params) => {
             return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.show(params.index)
+                  }
+                }
+              }, '查看'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.show(params.index)
+                  }
+                }
+              }, '编辑'),
               h('Button', {
                 props: {
                   type: 'error',
@@ -117,7 +168,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.orderList{
+.goodsList{
   height: 100%;
   .top{
     margin-bottom: 10px;

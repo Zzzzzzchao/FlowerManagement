@@ -1,13 +1,17 @@
 <template>
-  <div class="logisticsList">
+  <div class="homeList">
     <!-- top -->
     <div class="top">
       <Form :model="formLeft" label-position="right" :label-width="80" inline>
-        <FormItem label="物流名称">
+        <FormItem label="会员名称">
+          <Input v-model="formLeft.input1" />
+        </FormItem>
+        <FormItem label="会员等级">
           <Input v-model="formLeft.input2" />
         </FormItem>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">查询</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">新增</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">导出</Button>
+        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量赠送券</Button>
       </Form>
     </div>
     <!-- table -->
@@ -21,28 +25,43 @@
 </template>
 <script>
 export default {
-  name: 'logisticsList',
+  name: 'homeList',
   data () {
     return {
       formLeft: {
-        input1: ''
+        input1: '',
+        input2: '',
+        input3: ''
       },
       tableColumns: [
         {
-          title: '物流方式编号',
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '姓名/昵称',
           key: 'name'
         },
         {
-          title: '物流方式名称',
-          key: 'name'
+          title: '账号',
+          key: 'age'
         },
         {
-          title: '地区',
-          key: 'name'
+          title: '会员等级',
+          key: 'address'
         },
         {
-          title: '运费',
-          key: 'name'
+          title: '预存款',
+          key: 'address'
+        },
+        {
+          title: '订单数',
+          key: 'address'
+        },
+        {
+          title: '积分',
+          key: 'address'
         },
         {
           title: '操作',
@@ -50,6 +69,20 @@ export default {
           key: 'address',
           render: (h, params) => {
             return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.show(params.index)
+                  }
+                }
+              }, '查看'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -96,7 +129,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.logisticsList{
+.homeList{
   height: 100%;
   .top{
     margin-bottom: 10px;

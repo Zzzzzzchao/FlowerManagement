@@ -3,8 +3,10 @@
     <!-- top -->
     <div class="top">
       <Form :model="formLeft" label-position="right" :label-width="80" inline>
-        <FormItem label="商品分类">
-          <Input v-model="formLeft.input1" />
+        <FormItem label="商品分类" style="width:200px;">
+          <Select v-model="formLeft.input1" class="search-col">
+            <Option v-for="item in 10" :value="item" :key="`search-col-${item}`">{{ item }}</Option>
+          </Select>
         </FormItem>
         <FormItem label="商品名称">
           <Input v-model="formLeft.input2" />
@@ -15,20 +17,19 @@
         <FormItem label="商品品牌">
           <Input v-model="formLeft.input3" />
         </FormItem>
-        <FormItem label="商家编码">
-          <Input v-model="formLeft.input3" />
-        </FormItem>
         <FormItem label="商品编码">
           <Input v-model="formLeft.input3" />
         </FormItem>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">查询</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">新增</Button>
+        <Button class="btn" type="primary" @click="queryGoods('formInline')">查询</Button>
+        <Button class="btn" type="primary" @click="addGoods('formInline')">新增</Button>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">导入</Button>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">导出</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量删除</Button>
+        <Button class="btn" type="primary" @click="batchDelete('formInline')">批量删除</Button>
         <Button class="btn" type="primary" @click="handleSubmit('formInline')">批量上下架</Button>
       </Form>
     </div>
+    <!-- modal -->
+    <div v-if="modlaFlg"><AddModal :modalType='modalType' :defaultData="defaultData" :flg="modlaFlg" @cls="closeModal" /></div>
     <!-- table -->
     <div class="table">
       <Table size="small" :columns="tableColumns" :data="tableData"></Table>
@@ -39,10 +40,18 @@
   </div>
 </template>
 <script>
+import { getGoodsList, deleteGoodsApi, batchDeleteApi } from '@/api/goodsServer'
+import AddModal from './addModal.vue'
 export default {
   name: 'goodsList',
+  components: {
+    AddModal
+  },
   data () {
     return {
+      modlaFlg: false,
+      modalType: '',
+      defaultData: '',
       formLeft: {
         input1: '',
         input2: '',
@@ -118,21 +127,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.show(params.index)
-                  }
-                }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.show(params.index)
+                    this.editGoods(params)
                   }
                 }
               }, '编辑'),
@@ -143,7 +138,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    this.deleteGoods(1)
                   }
                 }
               }, '删除')
@@ -159,8 +154,66 @@ export default {
     }
   },
   methods: {
+    // 新增商品
+    addGoods () {
+      this.modalType = 'add'
+      this.modlaFlg = true
+    },
+    // 编辑商品
+    editGoods (data) {
+      this.modalType = 'edit'
+      this.defaultData = data
+      this.modlaFlg = true
+    },
+    // 删除商品
+    deleteGoods (id) {
+      this.$Modal.confirm({
+        title: '确定要删除么?',
+        onOk: () => {
+          deleteGoodsApi(id).then((res) => {
+            if (res.data.code === 1) {
+              this.$Message.success('删除成功')
+            } else {
+              this.$Message.error('删除失败')
+            }
+          })
+        }
+      })
+    },
+    // 批量删除
+    batchDelete () {
+      let data = {
+        ids: [1, 2, 3]
+      }
+      this.$Modal.confirm({
+        title: '确定要删除选中的商品么?',
+        onOk: () => {
+          batchDeleteApi(data).then((res) => {
+            if (res.data.code === 1) {
+              this.$Message.success('删除成功')
+            } else {
+              this.$Message.error('删除失败')
+            }
+          })
+        }
+      })
+    },
+    // 关闭弹窗
+    closeModal () {
+      this.modlaFlg = false
+    },
+    // 查询商品
+    queryGoods () {
+      let data = {
+
+      }
+      getGoodsList(data).then((res) => {
+        console.log(res)
+      })
+    }
   },
   created () {
+    this.queryGoods()
   },
   mounted () {
   }

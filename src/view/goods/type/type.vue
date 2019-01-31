@@ -1,52 +1,74 @@
 <template>
-  <div class="labelList">
+  <div class="typeList">
     <!-- top -->
     <div class="top">
       <Form :model="formData" label-position="right" :label-width="80" inline>
-        <FormItem label="标签名称">
-          <Input v-model="formData.markName" />
-        </FormItem>
-        <Button class="btn" type="primary" @click="queryGoodsMark()">查询</Button>
-        <Button class="btn" type="primary" @click="addGoodsMark()">新增</Button>
+        <!-- <FormItem label="分类名称">
+          <Input v-model="formData.input2" />
+        </FormItem> -->
+        <Button class="btn" type="primary" @click="queryGoodsType()">刷新</Button>
+        <Button class="btn" type="primary" @click="addGoodsType()">新增</Button>
       </Form>
     </div>
     <!-- modal -->
     <div v-if="modlaFlg"><AddModal :modalType='modalType' :defaultData="defaultData" :flg="modlaFlg" @cls="closeModal" /></div>
+    <div v-if="editFlg"><EditModal :defaultData='editData' :flg="editFlg" @cls="closeEditModal" /></div>
     <!-- table -->
     <div class="table">
       <Table size="small" :columns="tableColumns" :data="tableData"></Table>
-      <div class="page">
-        <Page :total="total" @on-change='choosePage' :page-size='10' show-total />
-      </div>
+      <!-- <div class="page">
+        <Page :total="100" show-total />
+      </div> -->
     </div>
   </div>
 </template>
 <script>
-import { getGoodsMarkList, deleteGoodsMarkApi } from '@/api/goodsServer'
+import { getGoodsTypeList, deleteGoodsTypeApi } from '@/api/goodsServer'
+import LevelTwo from './levelTwo.vue'
 import AddModal from './addModal.vue'
+import EditModal from './editModal.vue'
 export default {
-  name: 'labelList',
+  name: 'typeList',
   components: {
-    AddModal
+    AddModal,
+    LevelTwo,
+    EditModal
   },
   data () {
     return {
       modlaFlg: false,
       modalType: '',
       defaultData: '',
-      total: 0,
+      editData: '',
+      editFlg: false,
       formData: {
-        markName: '',
-        page: 1,
-        rows: 10
+        input1: ''
       },
       tableColumns: [
         {
-          title: '标签名称',
-          key: 'markName'
+          type: 'expand',
+          width: 50,
+          render: (h, params) => {
+            return h(LevelTwo, {
+              props: {
+                row: params.row.children
+              }
+            })
+          }
         },
         {
-          title: '标签描述',
+          title: '分类级别',
+          key: 'level',
+          render: (h, params) => {
+            return h('div', params.row.level + 1)
+          }
+        },
+        {
+          title: '分类名称',
+          key: 'name'
+        },
+        {
+          title: '分类描述',
           key: 'remark'
         },
         {
@@ -65,7 +87,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.editGoodsMark(params.row)
+                    this.editGoodsType(params.row)
                   }
                 }
               }, '编辑'),
@@ -76,7 +98,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.deleteGoodsMark(params.row.markId)
+                    this.deleteGoodsType(params.row.typeId)
                   }
                 }
               }, '删除')
@@ -92,27 +114,25 @@ export default {
     }
   },
   methods: {
-    // 新增标签
-    addGoodsMark () {
+    // 新增分类
+    addGoodsType () {
       this.modalType = 'add'
-      this.defaultData = ''
       this.modlaFlg = true
     },
-    // 编辑标签
-    editGoodsMark (data) {
-      this.modalType = 'edit'
-      this.defaultData = data
-      this.modlaFlg = true
+    // 编辑分类
+    editGoodsType (data) {
+      this.editData = data
+      this.editFlg = true
     },
     // 删除商品
-    deleteGoodsMark (id) {
+    deleteGoodsType (id) {
       this.$Modal.confirm({
         title: '确定要删除么?',
         onOk: () => {
-          deleteGoodsMarkApi(id).then((res) => {
+          deleteGoodsTypeApi(id).then((res) => {
             if (res.data.code === 1) {
               this.$Message.success('删除成功')
-              this.queryGoodsMark()
+              this.queryGoodsType()
             } else {
               this.$Message.error('删除失败')
             }
@@ -123,24 +143,25 @@ export default {
     // 关闭弹窗
     closeModal (type) {
       if (type) {
-        this.queryGoodsMark()
+        this.queryGoodsType()
       }
       this.modlaFlg = false
     },
-    // 查询品牌列表
-    queryGoodsMark () {
-      getGoodsMarkList(this.formData).then((res) => {
-        this.total = res.data.page.total
-        this.tableData = res.data.page.rows
-      })
+    closeEditModal (type) {
+      if (type) {
+        this.queryGoodsType()
+      }
+      this.editFlg = false
     },
-    choosePage (page) {
-      this.formData.page = page
-      this.queryGoodsMark()
+    // 查询品牌列表
+    queryGoodsType () {
+      getGoodsTypeList().then((res) => {
+        this.tableData = res.data.list
+      })
     }
   },
   created () {
-    this.queryGoodsMark()
+    this.queryGoodsType()
   },
   mounted () {
   }
@@ -148,7 +169,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.labelList{
+.typeList{
   height: 100%;
   .top{
     margin-bottom: 10px;

@@ -1,5 +1,5 @@
 import Main from '@/components/main'
-import parentView from '@/components/parent-view'
+// import parentView from '@/components/parent-view'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -50,6 +50,27 @@ export default [
       }
     ]
   },
+  {
+    path: '/message',
+    name: 'message',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'message_page',
+        name: 'message_page',
+        meta: {
+          icon: 'md-notifications',
+          title: '消息中心'
+        },
+        component: () => import('@/view/single-page/message/index.vue')
+      }
+    ]
+  },
+  /*
   {
     path: '',
     name: 'doc',
@@ -442,6 +463,7 @@ export default [
     },
     component: () => import('@/view/error-page/404.vue')
   },
+  */
   /* flower in router */
   {
     path: '/goods',
@@ -480,13 +502,13 @@ export default [
         component: () => import('@/view/goods/label/label.vue')
       },
       {
-        path: 'classify',
+        path: 'type',
         name: '商品分类',
         meta: {
           icon: '',
           title: '商品分类'
         },
-        component: () => import('@/view/goods/classify.vue')
+        component: () => import('@/view/goods/type/type.vue')
       }
     ]
   },
@@ -506,7 +528,7 @@ export default [
           icon: '',
           title: '订单列表'
         },
-        component: () => import('@/view/order/list.vue')
+        component: () => import('@/view/order/list/list.vue')
       },
       {
         path: 'notice',
@@ -630,6 +652,53 @@ export default [
           title: '商品分析'
         },
         component: () => import('@/view/statistical/goodsAnalysis.vue')
+      }
+    ]
+  },
+  {
+    path: '/system',
+    name: '系统管理',
+    meta: {
+      icon: '',
+      title: '系统管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'user',
+        name: '用户管理',
+        meta: {
+          icon: '',
+          title: '用户管理'
+        },
+        component: () => import('@/view/system/user/user.vue')
+      },
+      {
+        path: 'role',
+        name: '角色管理',
+        meta: {
+          icon: '',
+          title: '角色管理'
+        },
+        component: () => import('@/view/system/role/role.vue')
+      },
+      {
+        path: 'base',
+        name: '基础数据',
+        meta: {
+          icon: '',
+          title: '基础数据'
+        },
+        component: () => import('@/view/system/base/base.vue')
+      },
+      {
+        path: 'log',
+        name: '日志',
+        meta: {
+          icon: '',
+          title: '日志'
+        },
+        component: () => import('@/view/system/log/log.vue')
       }
     ]
   }

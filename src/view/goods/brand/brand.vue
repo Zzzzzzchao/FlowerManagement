@@ -2,56 +2,73 @@
   <div class="brandList">
     <!-- top -->
     <div class="top">
-      <Form :model="formLeft" label-position="right" :label-width="80" inline>
+      <Form :model="formData" label-position="right" :label-width="80" inline>
         <FormItem label="品牌名称">
-          <Input v-model="formLeft.input2" />
+          <Input v-model="formData.brandName" />
         </FormItem>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">查询</Button>
-        <Button class="btn" type="primary" @click="handleSubmit('formInline')">新增</Button>
+        <Button class="btn" type="primary" @click="queryGoodsBrand()">查询</Button>
+        <Button class="btn" type="primary" @click="addGoodsBrand()">新增</Button>
       </Form>
     </div>
+    <!-- modal -->
+    <div v-if="modlaFlg"><AddModal :modalType='modalType' :defaultData="defaultData" :flg="modlaFlg" @cls="closeModal" /></div>
     <!-- table -->
     <div class="table">
       <Table size="small" :columns="tableColumns" :data="tableData"></Table>
       <div class="page">
-        <Page :total="100" show-total />
+        <Page :total="total" @on-change='choosePage' :page-size='10' show-total />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { getGoodsBrandList, deleteGoodsBrandApi } from '@/api/goodsServer'
+import AddModal from './addModal.vue'
 export default {
-  name: 'goodsList',
+  name: 'goodsBrandList',
+  components: {
+    AddModal
+  },
   data () {
     return {
-      formLeft: {
-        input1: ''
+      modlaFlg: false,
+      modalType: '',
+      defaultData: '',
+      total: 0,
+      formData: {
+        brandName: '',
+        page: 1,
+        rows: 10
       },
       tableColumns: [
         {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
-        {
-          title: '品牌编号',
-          key: 'name'
-        },
-        {
           title: '品牌logo',
-          key: 'name'
+          key: 'logo',
+          render: (h, params) => {
+            return h('div', [
+              h('img', {
+                attrs: {
+                  src: params.row.logo
+                },
+                style: {
+                  width: '100px',
+                  marginTop: '5px'
+                }
+              })
+            ])
+          }
         },
         {
           title: '品牌名称',
-          key: 'name'
+          key: 'brandName'
         },
         {
           title: '品牌介绍',
-          key: 'name'
+          key: 'remark'
         },
         {
-          title: '状态',
-          key: 'name'
+          title: '排序',
+          key: 'orderNum'
         },
         {
           title: '操作',
@@ -69,21 +86,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.show(params.index)
-                  }
-                }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.show(params.index)
+                    this.editGoodsBrand(params.row)
                   }
                 }
               }, '编辑'),
@@ -94,7 +97,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    this.deleteGoodsBrand(params.row.brandId)
                   }
                 }
               }, '删除')
@@ -102,16 +105,59 @@ export default {
           }
         }
       ],
-      tableData: [
-        {
-          name: '123'
-        }
-      ]
+      tableData: []
     }
   },
   methods: {
+    // 新增品牌
+    addGoodsBrand () {
+      this.modalType = 'add'
+      this.defaultData = ''
+      this.modlaFlg = true
+    },
+    // 编辑商品
+    editGoodsBrand (data) {
+      this.modalType = 'edit'
+      this.defaultData = data
+      this.modlaFlg = true
+    },
+    // 删除商品
+    deleteGoodsBrand (id) {
+      this.$Modal.confirm({
+        title: '确定要删除么?',
+        onOk: () => {
+          deleteGoodsBrandApi(id).then((res) => {
+            if (res.data.code === 1) {
+              this.$Message.success('删除成功')
+              this.queryGoodsBrand()
+            } else {
+              this.$Message.error('删除失败')
+            }
+          })
+        }
+      })
+    },
+    // 关闭弹窗
+    closeModal (type) {
+      if (type) {
+        this.queryGoodsBrand()
+      }
+      this.modlaFlg = false
+    },
+    // 查询品牌列表
+    queryGoodsBrand () {
+      getGoodsBrandList(this.formData).then((res) => {
+        this.total = res.data.page.total
+        this.tableData = res.data.page.rows
+      })
+    },
+    choosePage (page) {
+      this.formData.page = page
+      this.queryGoodsBrand()
+    }
   },
   created () {
+    this.queryGoodsBrand()
   },
   mounted () {
   }

@@ -18,27 +18,23 @@
 <script>
 import LoginForm from '_c/login-form'
 import { loginReq } from '@/api/common'
+import { mapActions } from 'vuex'
 export default {
   components: {
     LoginForm
   },
   methods: {
+    ...mapActions([
+      'saveUserData'
+    ]),
     handleSubmit ({ userName, password }) {
-      console.log('测试')
-      // this.handleLogin({ userName, password }).then(res => {
-      //   this.getUserInfo().then(res => {
-      //     this.$router.push({
-      //       name: this.$config.homeName
-      //     })
-      //   })
-      // })
       let data = {
         username: userName,
         password: password
       }
-      console.log(data)
       loginReq(data).then((res) => {
         if (res.data.code === 1) {
+          this.saveUserData(res.data.user)
           this.$router.push('/home')
         } else {
           this.$Message.error(res.data.msg)

@@ -50,7 +50,7 @@ export default {
       oneListData: [],
       two: '',
       twoListData: [],
-      levelList: ['一级分类', '二级分类', '三级分类']
+      levelList: ['一级分类', '二级分类']
     }
   },
   props: {

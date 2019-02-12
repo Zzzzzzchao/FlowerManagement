@@ -13,7 +13,7 @@
           <Upload
           :on-success="handleSuccess"
           :show-upload-list="false"
-          action="http://47.96.98.24:88/file/upload?type=goods_brand"
+          :action="`${baseUrl}/file/upload?type=goods_brand`"
           >
             <img class="img" :src="formData.logo ? formData.logo : require('../../../assets/images/img.png')" alt="">
           </Upload>
@@ -31,10 +31,12 @@
 </template>
 <script>
 import { addGoodsBrand, editGoodsBrand } from '@/api/goodsServer'
-// import { uploadReq } from '@/api/common'
+import config from '../../../config/index.js'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 export default {
   data () {
     return {
+      baseUrl: baseUrl,
       formData: {
         brandName: '', // 品牌名称
         logo: '', // 品牌图片路径

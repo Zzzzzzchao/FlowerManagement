@@ -64,6 +64,7 @@ export default {
             })
           } else {
             // 编辑
+            this.formData.markId = this.defaultData.markId
             editGoodsMark(this.formData).then((res) => {
               this.$Message.success(res.data.msg)
               this.$emit('cls', 1)

@@ -7,8 +7,7 @@ import qs from 'qs'
 
 export const getGoodsList = data => {
   return axios.request({
-    url: '/goodsDetail/page',
-    data,
+    url: '/goodsDetail/page?' + qs.stringify(data),
     method: 'get'
   })
 }
@@ -38,8 +37,24 @@ export const deleteGoodsApi = data => {
 
 export const batchDeleteApi = data => {
   return axios.request({
-    url: '/goodsDetail/batchDelete',
+    url: '/goodsDetail/batchDelete/' + data.toString(),
+    method: 'get'
+  })
+}
+
+export const batchUpdateApi = data => {
+  return axios.request({
+    url: '/goodsDetail/batchUpdate',
     data,
+    method: 'post'
+  })
+}
+
+export const downGoods = data => {
+  return axios.request({
+    url: '/goodsDetail/exportExcel',
+    data,
+    responseType: 'blob',
     method: 'post'
   })
 }
@@ -47,6 +62,13 @@ export const batchDeleteApi = data => {
 /*
   商品品牌
 */
+
+export const getGoodsBrandAll = data => {
+  return axios.request({
+    url: '/goodsBrand/list',
+    method: 'get'
+  })
+}
 
 export const getGoodsBrandList = data => {
   return axios.request({
@@ -81,6 +103,13 @@ export const deleteGoodsBrandApi = data => {
 /*
   商品标签
 */
+
+export const getGoodsMarkAll = data => {
+  return axios.request({
+    url: '/goodsMark/list',
+    method: 'get'
+  })
+}
 
 export const getGoodsMarkList = data => {
   return axios.request({

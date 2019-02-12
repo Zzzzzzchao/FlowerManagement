@@ -18,7 +18,7 @@
           </span>
         </i-Col>
       </Row>
-      <div style="margin-left:20px" v-for="(three,index) in item.children" :key="index">
+      <!-- <div style="margin-left:20px" v-for="(three,index) in item.children" :key="index">
         <Row>
           <i-Col span="7">
             <span class="expand-value">{{ three.level + 1 }}</span>
@@ -36,7 +36,7 @@
             </span>
           </i-Col>
         </Row>
-      </div>
+      </div> -->
     </div>
     <div v-if="editFlg"><EditModal :defaultData='editData' :flg="editFlg" @cls="closeEditModal" /></div>
   </div>

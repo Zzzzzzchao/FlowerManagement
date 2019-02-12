@@ -45,8 +45,6 @@ export const getMenuByRouter = (list, access) => {
       if (showThisMenuEle(item, access)) res.push(obj)
     }
   })
-  console.log('菜单列表')
-  console.log(res)
   return res
 }
 

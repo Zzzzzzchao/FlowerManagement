@@ -68,6 +68,12 @@ export default {
     messageTrashCount: state => state.messageTrashList.length
   },
   actions: {
+    // 保存登录的用户信息
+    saveUserData ({ state, commit }, data) {
+      commit('setUserName', data.showname)
+      commit('setUserId', data.userId)
+      commit('setAccess', data.access)
+    },
     // 登录
     handleLogin ({ commit }, {userName, password}) {
       userName = userName.trim()
